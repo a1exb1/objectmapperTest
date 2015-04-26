@@ -13,6 +13,10 @@
 		E481B1CA1AEC4B0500CCEE3E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E481B1C91AEC4B0500CCEE3E /* Images.xcassets */; };
 		E481B1CD1AEC4B0500CCEE3E /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E481B1CB1AEC4B0500CCEE3E /* LaunchScreen.xib */; };
 		E481B1D91AEC4B0500CCEE3E /* objectmapperTestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E481B1D81AEC4B0500CCEE3E /* objectmapperTestTests.swift */; };
+		E481B1E31AEC4B1400CCEE3E /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E481B1E21AEC4B1400CCEE3E /* User.swift */; };
+		E481B1E51AEC56B500CCEE3E /* JSONObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E481B1E41AEC56B500CCEE3E /* JSONObject.swift */; };
+		E481B1E71AECDED500CCEE3E /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = E481B1E61AECDED500CCEE3E /* Product.swift */; };
+		E481B1E91AECF5D500CCEE3E /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = E481B1E81AECF5D500CCEE3E /* Address.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +40,10 @@
 		E481B1D21AEC4B0500CCEE3E /* objectmapperTestTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = objectmapperTestTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E481B1D71AEC4B0500CCEE3E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E481B1D81AEC4B0500CCEE3E /* objectmapperTestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = objectmapperTestTests.swift; sourceTree = "<group>"; };
+		E481B1E21AEC4B1400CCEE3E /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		E481B1E41AEC56B500CCEE3E /* JSONObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONObject.swift; sourceTree = "<group>"; };
+		E481B1E61AECDED500CCEE3E /* Product.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
+		E481B1E81AECF5D500CCEE3E /* Address.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Address.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +91,10 @@
 				E481B1C91AEC4B0500CCEE3E /* Images.xcassets */,
 				E481B1CB1AEC4B0500CCEE3E /* LaunchScreen.xib */,
 				E481B1C01AEC4B0400CCEE3E /* Supporting Files */,
+				E481B1E21AEC4B1400CCEE3E /* User.swift */,
+				E481B1E41AEC56B500CCEE3E /* JSONObject.swift */,
+				E481B1E61AECDED500CCEE3E /* Product.swift */,
+				E481B1E81AECF5D500CCEE3E /* Address.swift */,
 			);
 			path = objectmapperTest;
 			sourceTree = "<group>";
@@ -212,8 +224,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E481B1E91AECF5D500CCEE3E /* Address.swift in Sources */,
+				E481B1E51AEC56B500CCEE3E /* JSONObject.swift in Sources */,
 				E481B1C51AEC4B0400CCEE3E /* ViewController.swift in Sources */,
+				E481B1E71AECDED500CCEE3E /* Product.swift in Sources */,
 				E481B1C31AEC4B0400CCEE3E /* AppDelegate.swift in Sources */,
+				E481B1E31AEC4B1400CCEE3E /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -411,6 +427,7 @@
 				E481B1DE1AEC4B0500CCEE3E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E481B1DF1AEC4B0500CCEE3E /* Build configuration list for PBXNativeTarget "objectmapperTestTests" */ = {
 			isa = XCConfigurationList;
@@ -419,6 +436,7 @@
 				E481B1E11AEC4B0500CCEE3E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

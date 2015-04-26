@@ -12,14 +12,17 @@ class User: JSONObject {
    
     var UserID = 0
     var Name = ""
-    var Date = NSDate()
+    var Date:NSDate = NSDate()
     var Products = Array<Product>()
     var address = Address()
     
     override func registerClassesForJsonMapping() {
         
         self.registerClass(Product.self, forKey: "Products")
-        self.registerClass(Address.self, forKey: "address")
+        self.registerClass(Address.self, propertyKey: "address", jsonKey: "Address")
+
+        JSONMappingDefaults.sharedInstance().dateFormat = "dd/MM/yyyy HH:mm:ss"
+        //self.registerDate("Date", format: "dd/MM/yyyy HH:mm:ss")
     }
     
 }

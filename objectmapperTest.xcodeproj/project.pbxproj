@@ -17,6 +17,12 @@
 		E481B1E51AEC56B500CCEE3E /* JSONObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E481B1E41AEC56B500CCEE3E /* JSONObject.swift */; };
 		E481B1E71AECDED500CCEE3E /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = E481B1E61AECDED500CCEE3E /* Product.swift */; };
 		E481B1E91AECF5D500CCEE3E /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = E481B1E81AECF5D500CCEE3E /* Address.swift */; };
+		E481B1EC1AECFA1500CCEE3E /* NSDate+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E481B1EB1AECFA1500CCEE3E /* NSDate+Extension.swift */; };
+		E481B1EE1AED070300CCEE3E /* JSONMappingDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = E481B1ED1AED070300CCEE3E /* JSONMappingDefaults.swift */; };
+		E481B1F01AED3ECE00CCEE3E /* JsonRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E481B1EF1AED3ECE00CCEE3E /* JsonRequest.swift */; };
+		E481B1F21AED3EDE00CCEE3E /* swiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = E481B1F11AED3EDE00CCEE3E /* swiftyJSON.swift */; };
+		E481B1F41AED401A00CCEE3E /* Almofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = E481B1F31AED401A00CCEE3E /* Almofire.swift */; };
+		E481B1F71AED42AC00CCEE3E /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E481B1F61AED42AC00CCEE3E /* String+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +50,12 @@
 		E481B1E41AEC56B500CCEE3E /* JSONObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONObject.swift; sourceTree = "<group>"; };
 		E481B1E61AECDED500CCEE3E /* Product.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
 		E481B1E81AECF5D500CCEE3E /* Address.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Address.swift; sourceTree = "<group>"; };
+		E481B1EB1AECFA1500CCEE3E /* NSDate+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+Extension.swift"; sourceTree = "<group>"; };
+		E481B1ED1AED070300CCEE3E /* JSONMappingDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONMappingDefaults.swift; sourceTree = "<group>"; };
+		E481B1EF1AED3ECE00CCEE3E /* JsonRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JsonRequest.swift; sourceTree = "<group>"; };
+		E481B1F11AED3EDE00CCEE3E /* swiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = swiftyJSON.swift; sourceTree = "<group>"; };
+		E481B1F31AED401A00CCEE3E /* Almofire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Almofire.swift; sourceTree = "<group>"; };
+		E481B1F61AED42AC00CCEE3E /* String+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +97,8 @@
 		E481B1BF1AEC4B0400CCEE3E /* objectmapperTest */ = {
 			isa = PBXGroup;
 			children = (
+				E481B1F51AED429F00CCEE3E /* Extensions */,
+				E481B1EA1AECF9EE00CCEE3E /* JSON */,
 				E481B1C21AEC4B0400CCEE3E /* AppDelegate.swift */,
 				E481B1C41AEC4B0400CCEE3E /* ViewController.swift */,
 				E481B1C61AEC4B0400CCEE3E /* Main.storyboard */,
@@ -92,7 +106,6 @@
 				E481B1CB1AEC4B0500CCEE3E /* LaunchScreen.xib */,
 				E481B1C01AEC4B0400CCEE3E /* Supporting Files */,
 				E481B1E21AEC4B1400CCEE3E /* User.swift */,
-				E481B1E41AEC56B500CCEE3E /* JSONObject.swift */,
 				E481B1E61AECDED500CCEE3E /* Product.swift */,
 				E481B1E81AECF5D500CCEE3E /* Address.swift */,
 			);
@@ -122,6 +135,27 @@
 				E481B1D71AEC4B0500CCEE3E /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E481B1EA1AECF9EE00CCEE3E /* JSON */ = {
+			isa = PBXGroup;
+			children = (
+				E481B1F31AED401A00CCEE3E /* Almofire.swift */,
+				E481B1F11AED3EDE00CCEE3E /* swiftyJSON.swift */,
+				E481B1EF1AED3ECE00CCEE3E /* JsonRequest.swift */,
+				E481B1E41AEC56B500CCEE3E /* JSONObject.swift */,
+				E481B1ED1AED070300CCEE3E /* JSONMappingDefaults.swift */,
+			);
+			name = JSON;
+			sourceTree = "<group>";
+		};
+		E481B1F51AED429F00CCEE3E /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				E481B1EB1AECFA1500CCEE3E /* NSDate+Extension.swift */,
+				E481B1F61AED42AC00CCEE3E /* String+Extension.swift */,
+			);
+			name = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -226,10 +260,16 @@
 			files = (
 				E481B1E91AECF5D500CCEE3E /* Address.swift in Sources */,
 				E481B1E51AEC56B500CCEE3E /* JSONObject.swift in Sources */,
+				E481B1EE1AED070300CCEE3E /* JSONMappingDefaults.swift in Sources */,
+				E481B1F21AED3EDE00CCEE3E /* swiftyJSON.swift in Sources */,
+				E481B1F71AED42AC00CCEE3E /* String+Extension.swift in Sources */,
 				E481B1C51AEC4B0400CCEE3E /* ViewController.swift in Sources */,
 				E481B1E71AECDED500CCEE3E /* Product.swift in Sources */,
 				E481B1C31AEC4B0400CCEE3E /* AppDelegate.swift in Sources */,
 				E481B1E31AEC4B1400CCEE3E /* User.swift in Sources */,
+				E481B1F41AED401A00CCEE3E /* Almofire.swift in Sources */,
+				E481B1EC1AECFA1500CCEE3E /* NSDate+Extension.swift in Sources */,
+				E481B1F01AED3ECE00CCEE3E /* JsonRequest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

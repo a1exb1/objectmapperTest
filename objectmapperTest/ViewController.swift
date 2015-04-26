@@ -17,7 +17,7 @@ class ViewController: UIViewController {
         var dict = [
             "UserID" : 5,
             "Name" : "Alex",
-            "Date" : NSDate(),
+            "Date" : "20/09/1991 10:00:00",
             "Products" : [
                 [
                     "ProductID" : 6,
@@ -25,7 +25,7 @@ class ViewController: UIViewController {
                     "asdf": 34
                 ]
             ],
-            "address": [
+            "Address": [
                 "Ad1" : "32 haughgate close"
             ]
         ]
@@ -41,6 +41,9 @@ class ViewController: UIViewController {
         println(u.UserID)
         println(u.Products[0].Name)
         println(u.address.Ad1)
+        println(u.Date)
+        
+        println(u.convertToDictionary(nil))
         
     }
     

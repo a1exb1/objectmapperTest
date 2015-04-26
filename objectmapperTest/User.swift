@@ -8,7 +8,7 @@
 
 import UIKit
 
-class User: JSONObject, WebApiDelegate {
+class User: JSONObject {
    
     var UserID = 0
     var Name = ""
@@ -23,6 +23,6 @@ class User: JSONObject, WebApiDelegate {
     }
     
     func webApiUrl() -> String {
-        return "asdf"
+        return "http://topik.ustwo.com/Users"
     }
 }

@@ -10,6 +10,6 @@ import UIKit
 
 class Address: JSONObject {
    
-    var Ad1 = ""
+    var Ad1: String = ""
     
 }

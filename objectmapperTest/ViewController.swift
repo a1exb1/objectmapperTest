@@ -31,13 +31,11 @@ class ViewController: UIViewController {
         ]
         
         var u: User = User.createObjectFromDict(dict)
-        
-//        println(u.Name)
-//        println(u.UserID)
-//        println(u.Products[0].Name)
-//        println(u.address.Ad1)
-//        println(u.Date)
-        println(u.convertToDictionary(nil))
+    
+        var json:String = u.convertToJSONString(nil, includeNestedProperties: false)
+            json = json.replaceString("\"", withString: "#")
+        println(json)
+        //println(JSON(json))
         
         
     }

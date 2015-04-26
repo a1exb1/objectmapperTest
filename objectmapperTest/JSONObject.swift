@@ -30,15 +30,21 @@ class KeyWithType {
     optional func webApiUrl() -> String
 }
 
-class JSONObject: NSObject, WebApiDelegate {
+@objc protocol JsonMappingDelegate {
+    optional func registerClassesForJsonMapping()
+}
+
+class JSONObject: NSObject, WebApiDelegate, JsonMappingDelegate {
     
     private var classMappings = Dictionary<String, Mapping>()
     var webApiDelegate: WebApiDelegate?
+    var jsonMappingDelegate: JsonMappingDelegate?
     
     required override init() {
         super.init()
         
         self.webApiDelegate = self
+        self.jsonMappingDelegate = self
     }
     
     class func jsonURL(id:Int) -> String {
@@ -54,64 +60,55 @@ class JSONObject: NSObject, WebApiDelegate {
         
     }
 
-//    func convertToJSONString() -> String {
-//        
-//        return self.JSONString()
-//    }
-//
-//    func convertToDictionary(keysToInclude: Array<String>?) -> Dictionary<String, AnyObject> {
-//        
-//        var dict = Dictionary<String, AnyObject>()
-//        
-//        for key in self.objectDictionary().keys {
-//            
-//            if let keys = keysToInclude {
-//                
-//                if contains(keys, key as! String) {
-//                    
-//                    dict[key as! String] = self.objectDictionary()[key]
-//                }
-//            }
-//            else{
-//                
-//                dict[key as! String] = self.objectDictionary()[key]
-//            }
-//        }
-//        
-//        return dict
-//    }
+    func convertToJSONString(keysToInclude: Array<String>?, includeNestedProperties: Bool) -> String {
+        
+        return "\(convertToJSON(keysToInclude, includeNestedProperties: includeNestedProperties))"
+    }
+
     
+    func convertToJSON(keysToInclude: Array<String>?, includeNestedProperties: Bool) -> JSON {
+        
+        return JSON(convertToDictionary(keysToInclude, includeNestedProperties: includeNestedProperties))
+    }
     
-    func convertToDictionary(keysToInclude: Array<String>?) -> Dictionary<String, AnyObject> {
+    func convertToDictionary(keysToInclude: Array<String>?, includeNestedProperties: Bool) -> Dictionary<String, AnyObject> {
 
         var dict = Dictionary<String, AnyObject>()
 
         for key in self.keys() {
 
+            var propertyKey: String = classMappings[key] != nil ? classMappings[key]!.jsonKey : key
+            
             if let keys = keysToInclude {
 
                 if contains(keys, key) {
 
-                    dict[key] = self.valueForKey(key)
+                    dict[propertyKey] = self.valueForKey(key)
                 }
             }
             else{
                 //if is nested object
                 if let jsonObj: JSONObject = self.valueForKey(key) as? JSONObject {
                     
-                    dict[key] = jsonObj.convertToDictionary(nil)
+                    if includeNestedProperties {
+                        
+                        dict[propertyKey] = jsonObj.convertToDictionary(nil, includeNestedProperties: false)
+                    }
                 }
                 //if is nested array of objects
                 else if let jsonObjArray: [JSONObject] = self.valueForKey(key) as? [JSONObject] {
                     
-                    var arr = Array<Dictionary<String, AnyObject>>()
-                    
-                    for obj in jsonObjArray {
+                    if includeNestedProperties {
                         
-                        arr.append(obj.convertToDictionary(nil))
+                        var arr = Array<Dictionary<String, AnyObject>>()
+                        
+                        for obj in jsonObjArray {
+                            
+                            arr.append(obj.convertToDictionary(nil, includeNestedProperties: false))
+                        }
+                        
+                        dict[propertyKey] = arr
                     }
-                    
-                    dict[key] = arr
                 }
                 //if property
                 else{
@@ -122,17 +119,19 @@ class JSONObject: NSObject, WebApiDelegate {
                         var dateString = ""
                         
                         if let format = JSONMappingDefaults.sharedInstance().webApiSendDateFormat {
+                            
                             dateString = date.toString(format)
                         }
                         else{
+                            
                             dateString = date.toISOString()
                         }
                         
-                        dict[key] = dateString
+                        dict[propertyKey] = dateString
                     }
                     else{
                         
-                        dict[key] = self.valueForKey(key)
+                        dict[propertyKey] = self.valueForKey(key)
                     }
                 }
             }
@@ -176,10 +175,10 @@ class JSONObject: NSObject, WebApiDelegate {
     }
     
     
-    func setPropertiesFromDict(dict: Dictionary<String, AnyObject?>){
+    func setPropertiesFromDictionary(dict: Dictionary<String, AnyObject?>){
         
         classMappings = Dictionary<String, Mapping>() // this is needed for some reason
-        self.registerClassesForJsonMapping()
+        jsonMappingDelegate?.registerClassesForJsonMapping?()
         
         for k in keysWithTypes() {
             
@@ -203,7 +202,7 @@ class JSONObject: NSObject, WebApiDelegate {
                     for i:Int in 0...objectDictionary.count-1 {
                         
                         var object: JSONObject = mapper.mClass.alloc() as! JSONObject
-                        object.setPropertiesFromDict(objectDictionary[i] as! Dictionary<String, AnyObject>)
+                        object.setPropertiesFromDictionary(objectDictionary[i] as! Dictionary<String, AnyObject>)
                         array.append(object)
                     }
                     
@@ -214,7 +213,7 @@ class JSONObject: NSObject, WebApiDelegate {
                 else if dict[mapper.jsonKey] is Dictionary<String, AnyObject> {
                     
                     var object: JSONObject = mapper.mClass.alloc() as! JSONObject
-                    object.setPropertiesFromDict(dict[mapper.jsonKey] as! Dictionary<String, AnyObject>)
+                    object.setPropertiesFromDictionary(dict[mapper.jsonKey] as! Dictionary<String, AnyObject>)
                     self.setValue(object, forKey: mapper.propertyKey)
                 }
                 
@@ -223,7 +222,7 @@ class JSONObject: NSObject, WebApiDelegate {
                 
                 if let dictionaryValue: AnyObject? = dict[propertyKey]{
                     
-                    //check if types match
+                    //TODO: - check for more types
                     var typeString = "\(k.type)"
                     
                     if typeString.contains("NSDate") {
@@ -250,7 +249,7 @@ class JSONObject: NSObject, WebApiDelegate {
     class func createObjectFromDict< T : JSONObject >(dict: Dictionary<String, AnyObject?>) -> T {
         
         var obj = T()
-        obj.setPropertiesFromDict(dict)
+        obj.setPropertiesFromDictionary(dict)
         return obj
     }
     
@@ -303,7 +302,7 @@ class JSONObject: NSObject, WebApiDelegate {
         
         if let url = webApiDelegate?.webApiUrl?() {
             
-            return JsonRequest.create(url, parameters: self.convertToDictionary(nil), method: .POST)
+            return JsonRequest.create(url, parameters: self.convertToDictionary(nil, includeNestedProperties: false), method: .POST)
         }
         else{
             println("web api url not set")
@@ -315,7 +314,7 @@ class JSONObject: NSObject, WebApiDelegate {
         
         if let url = webApiDelegate?.webApiUrl?() {
             
-            return JsonRequest.create(url, parameters: self.convertToDictionary(nil), method: .PUT)
+            return JsonRequest.create(url, parameters: self.convertToDictionary(nil, includeNestedProperties: false), method: .PUT)
         }
         else{
             println("web api url not set")
@@ -327,7 +326,7 @@ class JSONObject: NSObject, WebApiDelegate {
         
         if let url = webApiDelegate?.webApiUrl?() {
             
-            return JsonRequest.create(url, parameters: self.convertToDictionary(nil), method: .DELETE)
+            return JsonRequest.create(url, parameters: self.convertToDictionary(nil, includeNestedProperties: false), method: .DELETE)
         }
         else{
             println("web api url not set")

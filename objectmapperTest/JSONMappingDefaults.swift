@@ -13,6 +13,7 @@ let kSharedInstance = JSONMappingDefaults()
 class JSONMappingDefaults: NSObject {
    
     var dateFormat = "dd/MM/yyyy HH:mm:ss"
+    var webApiSendDateFormat: String?
     
     class func sharedInstance() -> JSONMappingDefaults {
         return kSharedInstance

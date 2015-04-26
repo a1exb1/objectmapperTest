@@ -26,11 +26,20 @@ class KeyWithType {
     var type: MirrorType?
 }
 
-class JSONObject: NSObject {
-    
-    required override init() {}
+@objc protocol WebApiDelegate {
+    optional func webApiUrl() -> String
+}
+
+class JSONObject: NSObject, WebApiDelegate {
     
     private var classMappings = Dictionary<String, Mapping>()
+    var webApiDelegate: WebApiDelegate?
+    
+    required override init() {
+        super.init()
+        
+        self.webApiDelegate = self
+    }
     
     class func jsonURL(id:Int) -> String {
         return ""
@@ -40,8 +49,6 @@ class JSONObject: NSObject {
         
         return T.createObjectFromDict(json.dictionaryObject!)
     }
-
-    
     
     func setExtraPropertiesFromJSON(json:JSON) {
         
@@ -89,11 +96,12 @@ class JSONObject: NSObject {
                 }
             }
             else{
-
+                //if is nested object
                 if let jsonObj: JSONObject = self.valueForKey(key) as? JSONObject {
                     
                     dict[key] = jsonObj.convertToDictionary(nil)
                 }
+                //if is nested array of objects
                 else if let jsonObjArray: [JSONObject] = self.valueForKey(key) as? [JSONObject] {
                     
                     var arr = Array<Dictionary<String, AnyObject>>()
@@ -105,9 +113,27 @@ class JSONObject: NSObject {
                     
                     dict[key] = arr
                 }
+                //if property
                 else{
-                 
-                    dict[key] = self.valueForKey(key)
+                    
+                    //format as string if date
+                    if let date: NSDate = self.valueForKey(key) as? NSDate {
+                        
+                        var dateString = ""
+                        
+                        if let format = JSONMappingDefaults.sharedInstance().webApiSendDateFormat {
+                            dateString = date.toString(format)
+                        }
+                        else{
+                            dateString = date.toISOString()
+                        }
+                        
+                        dict[key] = dateString
+                    }
+                    else{
+                        
+                        dict[key] = self.valueForKey(key)
+                    }
                 }
             }
         }
@@ -270,4 +296,43 @@ class JSONObject: NSObject {
     func registerClassesForJsonMapping() {
         
     }
+    
+    // MARK: - Web Api Methods
+    
+    func webApiInsert() -> JsonRequest?{
+        
+        if let url = webApiDelegate?.webApiUrl?() {
+            
+            return JsonRequest.create(url, parameters: self.convertToDictionary(nil), method: .POST)
+        }
+        else{
+            println("web api url not set")
+            return nil
+        }
+    }
+    
+    func webApiUpdate() -> JsonRequest?{
+        
+        if let url = webApiDelegate?.webApiUrl?() {
+            
+            return JsonRequest.create(url, parameters: self.convertToDictionary(nil), method: .PUT)
+        }
+        else{
+            println("web api url not set")
+            return nil
+        }
+    }
+    
+    func webApiDelete() -> JsonRequest?{
+        
+        if let url = webApiDelegate?.webApiUrl?() {
+            
+            return JsonRequest.create(url, parameters: self.convertToDictionary(nil), method: .DELETE)
+        }
+        else{
+            println("web api url not set")
+            return nil
+        }
+    }
+    
 }

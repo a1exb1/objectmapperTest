@@ -30,41 +30,17 @@ class ViewController: UIViewController {
             ]
         ]
         
-        //var u = User()
-        //println(u.valueForKey("Name")! is String)
-    
-        //u.setPropertiesFromDict(dict)
-        
         var u: User = User.createObjectFromDict(dict)
         
-        println(u.Name)
-        println(u.UserID)
-        println(u.Products[0].Name)
-        println(u.address.Ad1)
-        println(u.Date)
-        
+//        println(u.Name)
+//        println(u.UserID)
+//        println(u.Products[0].Name)
+//        println(u.address.Ad1)
+//        println(u.Date)
         println(u.convertToDictionary(nil))
         
+        
     }
-    
-//    func v () {
-//        
-//        var count
-//        var properties: objc_property_t = class_copyPropertyList(User.self, <#outCount: UnsafeMutablePointer<UInt32>#>)
-//        
-//        unsigned count;
-//        objc_property_t *properties = class_copyPropertyList([self class], &count);
-//        for (NSInteger i = 0; i < count; i++) {
-//            NSString *key = [NSString stringWithUTF8String:property_getName(properties[i])];
-//            [dict setObject:key forKey:key];
-//        }
-//    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
 
 }
 

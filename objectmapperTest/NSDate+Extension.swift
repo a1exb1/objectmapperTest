@@ -24,4 +24,22 @@ extension NSDate {
         dateFormatter.dateFormat = f
         return dateFormatter.stringFromDate(self)
     }
+    
+     func toISOString() -> String {
+        var dateFormatter = NSDateFormatter()
+        dateFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+        dateFormatter.timeZone = NSTimeZone(abbreviation: "GMT")
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        
+        return dateFormatter.stringFromDate(self).stringByAppendingString("+00:00Z")
+    }
+    
+     class func dateFromISOString(string: String) -> NSDate {
+        var dateFormatter = NSDateFormatter()
+        dateFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+        dateFormatter.timeZone = NSTimeZone.localTimeZone()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        
+        return dateFormatter.dateFromString(string)!
+    }
 }

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class User: JSONObject {
+class User: JSONObject, WebApiDelegate {
    
     var UserID = 0
     var Name = ""
@@ -20,9 +20,9 @@ class User: JSONObject {
         
         self.registerClass(Product.self, forKey: "Products")
         self.registerClass(Address.self, propertyKey: "address", jsonKey: "Address")
-
-        JSONMappingDefaults.sharedInstance().dateFormat = "dd/MM/yyyy HH:mm:ss"
-        //self.registerDate("Date", format: "dd/MM/yyyy HH:mm:ss")
     }
     
+    func webApiUrl() -> String {
+        return "asdf"
+    }
 }

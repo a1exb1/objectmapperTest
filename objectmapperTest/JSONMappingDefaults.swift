@@ -12,10 +12,11 @@ let kSharedInstance = JSONMappingDefaults()
 
 class JSONMappingDefaults: NSObject {
    
-    var dateFormat = "dd/MM/yyyy HH:mm:ss"
+    var dateFormat:String = DateFormat.ISO8601.rawValue
     var webApiSendDateFormat: String?
     
     class func sharedInstance() -> JSONMappingDefaults {
+        
         return kSharedInstance
     }
     

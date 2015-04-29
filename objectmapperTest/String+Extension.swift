@@ -23,8 +23,7 @@ extension String {
         return false
     }
     
-    mutating func replaceString(string:String, withString:String) -> String {
-        self = self.stringByReplacingOccurrencesOfString(string, withString: withString, options: NSStringCompareOptions.LiteralSearch, range: nil)
-        return self
+    func replaceString(string:String, withString:String) -> String {
+        return self.stringByReplacingOccurrencesOfString(string, withString: withString, options: NSStringCompareOptions.LiteralSearch, range: nil)
     }
 }

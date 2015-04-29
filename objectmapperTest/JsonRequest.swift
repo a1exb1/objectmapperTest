@@ -11,9 +11,11 @@ import UIKit
 
 class JsonRequest {
     
-    var urlString = ""
-    var method: Method = .GET
-    var parameters: Dictionary<String, AnyObject>?
+    private var urlString = ""
+    private var method: Method = .GET
+    private var parameters: Dictionary<String, AnyObject>?
+    
+    var almofireRequest: Request?
     
     private var succeedDownloadClosures: [(json: JSON, request: JsonRequest) -> ()] = []
     private var succeedContextClosures: [() -> ()] = []
@@ -26,7 +28,6 @@ class JsonRequest {
     class func create(urlString:String, parameters:Dictionary<String, AnyObject>?, method:Method) -> JsonRequest {
         
         return JsonRequest(urlString: urlString, parameters: parameters, method: method)
-        
     }
     
     private convenience init(urlString:String, parameters:Dictionary<String, AnyObject>?, method:Method) {
@@ -36,7 +37,7 @@ class JsonRequest {
         self.parameters = parameters
         self.method = method
         
-        go()
+        exec()
     }
     
     func onDownloadSuccess(success: (json: JSON, request: JsonRequest) -> ()) -> JsonRequest {
@@ -69,51 +70,63 @@ class JsonRequest {
     
     
     func succeedDownload(json: JSON) {
+        
         for closure in self.succeedDownloadClosures {
+            
             closure(json: json, request: self)
         }
     }
     
     func succeedContext() {
+        
         for closure in self.succeedContextClosures {
+            
             closure()
         }
     }
     
     
     func failDownload(error: NSError, alert: UIAlertController) {
+        
         for closure in self.failDownloadClosures {
+            
             closure(error: error, alert: alert)
         }
     }
     
     func failContext() {
+        
         for closure in self.failContextClosures {
+            
             closure()
         }
     }
     
     
     func finishDownload() {
+        
         for closure in self.finishDownloadClosures {
+            
             closure()
         }
     }
     
     
-    private func go() {
+    private func exec() {
         
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         
-        request(method, urlString, parameters: parameters, encoding: ParameterEncoding.URL)
+        self.almofireRequest = request(method, urlString, parameters: parameters, encoding: ParameterEncoding.URL)
             .response{ (request, response, data, error) in
-                
+
                 if let e = error {
-                    
+                
                     var alert = self.alertControllerForError(e, completion: { (retry) -> () in
                         
-                        if retry{
-                            self.go()
+                        if retry {
+                            
+                            self.cancel()
+                            self.exec()
                         }
                     })
                     
@@ -147,24 +160,13 @@ class JsonRequest {
         
         return alertController
     }
-
-}
-
-extension UIAlertController {
     
-    func show() {
+    func cancel() {
         
-        topMostController().presentViewController(self, animated: true) { () -> Void in
-        }
+        self.almofireRequest?.cancel()
     }
-    
-    private func topMostController() -> UIViewController
-    {
-        var topController = UIApplication.sharedApplication().keyWindow!.rootViewController;
-        while ((topController!.presentedViewController) != nil) {
-            topController = topController!.presentedViewController;
-        }
-        return topController!
-    }
+
 }
+
+
 

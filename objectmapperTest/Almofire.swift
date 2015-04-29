@@ -643,7 +643,10 @@ public class Request {
     
     :returns: The request.
     */
-    public func progress(closure: ((Int64, Int64, Int64) -> Void)? = nil) -> Self {
+    
+    // ALEX: Added done/total/expected to closure
+    
+    public func progress(closure: ((done: Int64, total: Int64, expected: Int64) -> Void)? = nil) -> Self {
         if let uploadDelegate = delegate as? UploadTaskDelegate {
             uploadDelegate.uploadProgress = closure
         } else if let dataDelegate = delegate as? DataTaskDelegate {
@@ -680,7 +683,10 @@ public class Request {
     
     :returns: The request.
     */
-    public func response(completionHandler: (NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void) -> Self {
+    
+    //ALEX: Added keys for parameters in completionHandler
+    
+    public func response(completionHandler: (request: NSURLRequest, response: NSHTTPURLResponse?, data: AnyObject?, error: NSError?) -> Void) -> Self {
         return response(serializer: Request.responseDataSerializer(), completionHandler: completionHandler)
     }
     

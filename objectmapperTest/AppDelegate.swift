@@ -17,7 +17,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
-        JSONMappingDefaults.sharedInstance().dateFormat = "dd/MM/yyyy HH:mm:ss"
+        //set json mapping defaults if neccessary
+        JSONMappingDefaults.sharedInstance().dateFormat = DateFormat.ISO8601.rawValue // example
+        
+        //web api defaults
+        WebApiDefaults.sharedInstance().domain = "http://topik.ustwo.com"
         
         return true
     }

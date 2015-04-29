@@ -26,30 +26,60 @@ class KeyWithType {
     var type: MirrorType?
 }
 
-@objc protocol WebApiDelegate {
-    optional func webApiUrl() -> String
+//@objc protocol WebApiDelegate {
+//    optional func webApiUrl() -> String
+//    optional func webApiMutateUrl () -> String
+//}
+
+protocol WebApiManagerDelegate {
+    func webApiRestObjectID() -> Int?
 }
 
 @objc protocol JsonMappingDelegate {
     optional func registerClassesForJsonMapping()
 }
 
-class JSONObject: NSObject, WebApiDelegate, JsonMappingDelegate {
+class JSONObject: NSObject, WebApiManagerDelegate, JsonMappingDelegate {
     
     private var classMappings = Dictionary<String, Mapping>()
-    var webApiDelegate: WebApiDelegate?
+    var webApiManagerDelegate: WebApiManagerDelegate?
     var jsonMappingDelegate: JsonMappingDelegate?
+    var webApiManager = WebApiManager()
+    
+    class func webApiUrls() -> WebApiManager {
+        
+        return WebApiManager()
+    }
     
     required override init() {
         super.init()
         
-        self.webApiDelegate = self
         self.jsonMappingDelegate = self
+        
+        self.webApiManagerDelegate = self
+        //webApiManager.webApiManagerDelegate?.configureWebApiManager(webApiManager)
     }
     
-    class func jsonURL(id:Int) -> String {
-        return ""
-    }
+//    class func getObjectFromJsonAsync< T : JSONObject >(id:Int, completion: (object:T) -> () ) {
+//        
+//        if let url = T.webApiUrls().getUrl(id) {
+//         
+//            JsonRequest.create(url, parameters: nil, method: .GET).onDownloadSuccess { (json, request) -> () in
+//                
+//                completion(object: self.createObjectFromJson(json) as T)
+//            }
+//        }
+//    }
+//    
+//    class func requestObjectWithID< T : JSONObject >(id: Int) -> JsonRequest? {
+//        
+//        if let url = T.webApiUrls().getUrl(id) {
+//        
+//            return JsonRequest.create(url, parameters: nil, method: .GET)
+//        }
+//        
+//        return nil
+//    }
     
     class func createObjectFromJson< T : JSONObject >(json:JSON) -> T {
         
@@ -58,6 +88,11 @@ class JSONObject: NSObject, WebApiDelegate, JsonMappingDelegate {
     
     func setExtraPropertiesFromJSON(json:JSON) {
         
+    }
+    
+    class func webApiUrl(id: Int?) -> String {
+        
+        return ""
     }
 
     func convertToJSONString(keysToInclude: Array<String>?, includeNestedProperties: Bool) -> String {
@@ -124,7 +159,7 @@ class JSONObject: NSObject, WebApiDelegate, JsonMappingDelegate {
                         }
                         else{
                             
-                            dateString = date.toISOString()
+                            dateString = date.toString(JSONMappingDefaults.sharedInstance().dateFormat)
                         }
                         
                         dict[propertyKey] = dateString
@@ -161,17 +196,13 @@ class JSONObject: NSObject, WebApiDelegate, JsonMappingDelegate {
     
     func keys() -> [String] {
         
-        let m = reflect(self)
-        var s = [String]()
+        var rc = [String]()
         
-        for i in 0..<m.count {
-            
-            let (name, _) = m[i]
-            if name == "super"{continue}
-            s.append(name)
+        for k in keysWithTypes() {
+            rc.append(k.key)
         }
         
-        return s
+        return rc
     }
     
     
@@ -300,38 +331,64 @@ class JSONObject: NSObject, WebApiDelegate, JsonMappingDelegate {
     
     func webApiInsert() -> JsonRequest?{
         
-        if let url = webApiDelegate?.webApiUrl?() {
-            
+        return webApiInsert(nil)
+    }
+    
+    func webApiInsert(keysToInclude: Array<String>?) -> JsonRequest?{
+        
+        if let url = self.dynamicType.webApiUrls().insertUrl() {
+        
             return JsonRequest.create(url, parameters: self.convertToDictionary(nil, includeNestedProperties: false), method: .POST)
         }
         else{
+            
             println("web api url not set")
-            return nil
+            
         }
+        
+        return nil
     }
     
     func webApiUpdate() -> JsonRequest?{
         
-        if let url = webApiDelegate?.webApiUrl?() {
+        return webApiUpdate(nil)
+    }
+    
+    func webApiUpdate(keysToInclude: Array<String>?) -> JsonRequest?{
+        
+        if let url = self.dynamicType.webApiUrls().updateUrl(webApiManagerDelegate?.webApiRestObjectID()) {
             
-            return JsonRequest.create(url, parameters: self.convertToDictionary(nil, includeNestedProperties: false), method: .PUT)
+            return JsonRequest.create(url, parameters: self.convertToDictionary(keysToInclude, includeNestedProperties: false), method: .PUT)
         }
         else{
+            
             println("web api url not set")
-            return nil
         }
+        
+        return nil
     }
     
     func webApiDelete() -> JsonRequest?{
         
-        if let url = webApiDelegate?.webApiUrl?() {
-            
-            return JsonRequest.create(url, parameters: self.convertToDictionary(nil, includeNestedProperties: false), method: .DELETE)
+        if let url = self.dynamicType.webApiUrls().deleteUrl(webApiManagerDelegate?.webApiRestObjectID()) {
+
+            return JsonRequest.create(url, parameters: nil, method: .DELETE)
         }
         else{
+            
             println("web api url not set")
-            return nil
         }
+        
+        return nil
+    }
+    
+//    func configureWebApiManager(manager: WebApiManager) {
+//        
+//    }
+    
+    func webApiRestObjectID() -> Int? {
+        
+        return nil
     }
     
 }

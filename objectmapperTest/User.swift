@@ -10,11 +10,15 @@ import UIKit
 
 class User: JSONObject {
    
-    var UserID = 0
-    var Name = ""
+    var id = 0
+    var Username = ""
+    var Email = ""
+    var Password = ""
+    
     var Date:NSDate = NSDate()
     var Products = Array<Product>()
     var address = Address()
+    
     
     override func registerClassesForJsonMapping() {
         
@@ -22,7 +26,16 @@ class User: JSONObject {
         self.registerClass(Address.self, propertyKey: "address", jsonKey: "Address")
     }
     
-    func webApiUrl() -> String {
-        return "http://topik.ustwo.com/Users"
+    
+    // MARK: - Web api methods
+    
+    override class func webApiUrls() -> WebApiManager {
+        
+        return WebApiManager().setupUrlsForREST("Users")
+    }
+    
+    override func webApiRestObjectID() -> Int? {
+        
+        return id
     }
 }

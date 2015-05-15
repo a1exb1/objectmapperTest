@@ -55,9 +55,17 @@ class JSONObject: NSObject, WebApiManagerDelegate, JsonMappingDelegate {
         super.init()
         
         self.jsonMappingDelegate = self
-        
         self.webApiManagerDelegate = self
-        //webApiManager.webApiManagerDelegate?.configureWebApiManager(webApiManager)
+    }
+    
+    class func requestObjectWithID(id: Int) -> JsonRequest? {
+     
+        if let url = self.webApiUrls().getUrl(id) {
+            
+            return JsonRequest.create(url, parameters: nil, method: .GET)
+        }
+        
+        return nil
     }
     
 //    class func getObjectFromJsonAsync< T : JSONObject >(id:Int, completion: (object:T) -> () ) {
